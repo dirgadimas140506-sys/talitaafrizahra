@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Happy Anniversary</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;700&family=Caveat:wght@500&family=Nunito:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--kuning:#F3DFA2;--anggur:#6B2233;--krem:#FCF6E0;
+--serif:'Fraunces',Georgia,serif;--hand:'Caveat','Comic Sans MS',cursive;--sans:'Nunito',system-ui,sans-serif}
+*{box-sizing:border-box;margin:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--sans);background:var(--krem);color:var(--anggur);line-height:1.75;overflow-x:hidden}
+section{padding:90px 24px;max-width:760px;margin:auto}
+h2{font-family:var(--serif);font-weight:700;font-size:clamp(26px,5.5vw,38px);line-height:1.2;margin-bottom:28px}
+button{font:inherit;cursor:pointer;border:0}
+button:focus-visible,a:focus-visible{outline:3px solid var(--anggur);outline-offset:3px}
+
+.hero{max-width:none;min-height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;background:var(--kuning);padding:80px 24px}
+.hero small{font-size:17px;letter-spacing:.02em}
+.hero h1{font-family:var(--serif);font-weight:700;font-size:clamp(56px,19vw,150px);line-height:1.05;margin:10px 0 14px;word-break:break-word}
+.days{font-size:18px;margin-bottom:38px;min-height:1.7em}
+.btn{background:var(--anggur);color:var(--kuning);padding:14px 32px;border-radius:999px;font-weight:600;font-size:17px;transition:opacity .2s}
+.btn:hover{opacity:.88}
+.down{display:inline-block;margin-top:28px;color:var(--anggur);font-size:16px}
+
+#music{position:fixed;top:calc(14px + env(safe-area-inset-top,0px));right:14px;z-index:30;width:42px;height:42px;border-radius:50%;background:var(--anggur);color:var(--kuning);font-size:18px}
+#music.off{opacity:.45}
+
+.reasons p{padding:20px 0;border-bottom:1px solid rgba(107,34,51,.25);font-size:18px}
+.reasons p:first-child{border-top:1px solid rgba(107,34,51,.25)}
+
+.gallery{max-width:none;background:var(--kuning)}
+.gallery>div{max-width:960px;margin:auto}
+.wall{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:22px 16px}
+.pol{background:var(--krem);padding:9px 9px 26px;cursor:zoom-in;transition:transform .25s;display:block;width:100%}
+.pol:nth-child(odd){transform:rotate(-1.8deg)}.pol:nth-child(even){transform:rotate(1.5deg)}
+.pol:hover{transform:rotate(0) scale(1.04)}
+.pol img{width:100%;aspect-ratio:1;object-fit:cover;display:block;background:rgba(107,34,51,.15)}
+.gallery p.info{margin:-12px 0 28px}
+
+.cheer{max-width:none;text-align:center;background:var(--anggur);color:var(--kuning)}
+.cheer p#msg{font-family:var(--serif);font-size:clamp(21px,4.6vw,30px);line-height:1.5;max-width:600px;margin:0 auto 32px;min-height:4.5em}
+.cheer .btn{background:var(--kuning);color:var(--anggur)}
+
+.modal{position:fixed;inset:0;z-index:40;background:rgba(107,34,51,.88);display:none;align-items:center;justify-content:center;padding:22px}
+.modal.open{display:flex}
+.letter{background:var(--kuning);max-width:500px;max-height:86svh;overflow:auto;padding:38px 30px;border-radius:4px;position:relative;font-family:var(--hand);font-size:26px;line-height:1.45}
+.letter p+p{margin-top:14px}
+.x{position:absolute;top:8px;right:12px;background:none;font-size:30px;color:var(--anggur)}
+#big{max-width:min(92vw,720px);max-height:88svh;border:7px solid var(--krem)}
+
+footer{text-align:center;padding:50px 24px calc(60px + env(safe-area-inset-bottom,0px));font-family:var(--hand);font-size:25px}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.pol{transition:none}}
+</style>
+</head>
+<body>
+
+<button id="music" class="off" aria-label="Putar atau jeda musik">♪</button>
+<audio id="bgm" loop src="assets/audio/backsound.mp3"></audio>
+
+<header class="hero">
+  <small>selamat anniversary</small>
+  <h1 id="nama">Nama</h1>
+  <p class="days" id="days"></p>
+  <button class="btn" id="openLetter">Buka suratnya</button>
+  <a class="down" href="#alasan">lanjut ke bawah</a>
+</header>
+
+<section id="alasan">
+  <h2>Kenapa aku sayang kamu</h2>
+  <div class="reasons">
+    <p>kamu lucu kamu cantik kamu gemesinnnnnn.</p>
+    <p>kamu selalu ngeusahain aku apapun cara itu yang bikin aku jatuh cinta sama kamuuuu.</p>
+    <p>cara kamu peduli sama aku gada duanya.</p>
+    <p>kamu selalu cantik mau di apain aja.</p>
+    <p>kamu ngebuat aku kecintaaaan bangetttt.</p>
+    <p>apapun yang terjadi aku selalu cinta sama kamuu.</p>
+  </div>
+</section>
+
+<section class="gallery">
+  <div>
+    <h2>dump us</h2>
+    <p class="info" id="galInfo"></p>
+    <div class="wall" id="wall"></div>
+  </div>
+</section>
+
+<section class="cheer">
+  <h2>kalo kamu ladii butuh semangatt</h2>
+  <p id="msg">aku selalu banggain kamuuu ke siapapunnnn.</p>
+  <button class="btn" id="cheerBtn">pencettttt</button>
+</section>
+
+<footer>dari <span id="dari">aku</span>, buat <span class="to">kamu</span></footer>
+
+<div class="modal" id="letterModal" role="dialog" aria-modal="true" aria-label="Surat">
+  <div class="letter">
+    <button class="x" data-close aria-label="Tutup">×</button>
+    <p>aloo <span class="to">mamaa iyennn</span>,</p>
+    <p>maafff yaa sayang aku gatau tanggal kita jadian cuman kalo aku inget inget si keknya 30 aprill begaya banget yaa atuu.</p>
+    <p>terimakasih banyak sayanggg kamu udah sabar banget sama akuuu.</p>
+    <p>Sayang kamu banyak-banyak.<br>— <span class="from">Gagaaa</span></p>
+  </div>
+</div>
+
+<div class="modal" id="photoModal" role="dialog" aria-modal="true" aria-label="Foto">
+  <img id="big" alt="">
+</div>
+
+<script>
+const CONFIG = {
+  untuk: "Talita Afrizahra",         
+  dari: "Gagaaaa",              
+  tanggalJadian: "30-04-2025", 
+  jumlahFoto: 10,              
+  semangat: [
+    "Kamu udah jalan sejauh ini. Itu bukan kebetulan, itu karena kamu kuat.",
+    "Capek itu boleh. Berhenti sebentar juga boleh. Aku tetap di sini.",
+    "Kamu nggak harus sempurna buat disayang. Kamu udah cukup, apa adanya.",
+    "Hari ini berat? Tarik napas dulu. Satu langkah kecil juga tetap maju.",
+    "Aku bangga sama kamu, bahkan buat hal-hal yang kamu anggap sepele.",
+    "Apa pun hasilnya nanti, kamu udah berusaha. Dan itu keren."
+  ]
+};
+
+const q = new URLSearchParams(location.search);  
+const untuk = q.get("untuk") || CONFIG.untuk, dari = q.get("dari") || CONFIG.dari, tgl = q.get("tgl") || CONFIG.tanggalJadian;
+const $ = s => document.querySelector(s), $$ = s => document.querySelectorAll(s);
+
+document.title = "Untuk " + untuk;
+$("#nama").textContent = untuk;
+$("#dari").textContent = dari;
+$$(".to").forEach(e => e.textContent = untuk);
+$$(".from").forEach(e => e.textContent = dari);
+
+if (tgl) {
+  const d = Math.floor((Date.now() - new Date(tgl + "T00:00:00")) / 864e5);
+  if (d >= 0) $("#days").textContent = "sudah " + d.toLocaleString("id-ID") + " hari bersama";
+}
+
+$("#galInfo").textContent = "Klik foto buat lihat lebih besar.";
+for (let i = 1; i <= CONFIG.jumlahFoto; i++) {
+  const b = document.createElement("button");
+  b.className = "pol"; b.setAttribute("aria-label", "Lihat foto " + i);
+  b.innerHTML = '<img loading="lazy" alt="Foto kenangan ' + i + '" src="assets/foto/' + i + '.jpg">';
+  b.onclick = () => { $("#big").src = "assets/foto/" + i + ".jpg"; $("#photoModal").classList.add("open"); };
+  $("#wall").appendChild(b);
+}
+
+const letterModal = $("#letterModal"), photoModal = $("#photoModal");
+$("#openLetter").onclick = () => { letterModal.classList.add("open"); startMusic(); };
+[letterModal, photoModal].forEach(m => m.addEventListener("click", e => { if (e.target === m || e.target.hasAttribute("data-close")) m.classList.remove("open"); }));
+addEventListener("keydown", e => { if (e.key === "Escape") $$(".modal").forEach(m => m.classList.remove("open")); });
+
+let last = 0;
+$("#cheerBtn").onclick = () => {
+  let n; do { n = Math.floor(Math.random() * CONFIG.semangat.length); } while (n === last && CONFIG.semangat.length > 1);
+  last = n; $("#msg").textContent = CONFIG.semangat[n];
+};
+
+const bgm = $("#bgm"), mb = $("#music");
+function startMusic() { if (bgm.paused) bgm.play().then(() => mb.classList.remove("off")).catch(() => {}); }
+mb.onclick = () => { if (bgm.paused) startMusic(); else { bgm.pause(); mb.classList.add("off"); } };
+</script>
+</body>
+</html>

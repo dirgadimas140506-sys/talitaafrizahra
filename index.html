@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Click the Heart</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+  body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    color: #fff;
+    background: radial-gradient(circle at 50% 40%, #3a0a24, #12030b 70%);
+    overflow: hidden;
+    user-select: none;
+  }
+
+  h1 { font-size: clamp(1.2rem, 4vw, 1.8rem); font-weight: 600; letter-spacing: .5px; opacity: .9; }
+
+  .counter { font-size: 3rem; font-weight: 700; color: #ff5c8a; text-shadow: 0 0 20px rgba(255,92,138,.6); }
+  .counter small { display: block; font-size: .9rem; font-weight: 400; color: #ffb3c7; text-align: center; }
+
+  .heart-btn {
+    position: relative;
+    width: 180px; height: 180px;
+    border: none; background: none; cursor: pointer;
+    animation: beat 1.4s infinite;
+    filter: drop-shadow(0 0 25px rgba(255, 60, 110, .7));
+    transition: transform .1s;
+  }
+  .heart-btn::before, .heart-btn::after {
+    content: "";
+    position: absolute;
+    top: 0; left: 50%;
+    width: 50%; height: 80%;
+    background: linear-gradient(160deg, #ff6b95, #e0143f);
+    border-radius: 100px 100px 0 0;
+    transform-origin: 0 100%;
+    transform: rotate(-45deg);
+  }
+  .heart-btn::after {
+    left: 0;
+    transform-origin: 100% 100%;
+    transform: rotate(45deg);
+  }
+  .heart-btn:active { transform: scale(.85); }
+  .heart-btn.pop { animation: pop .35s ease-out; }
+
+  @keyframes beat {
+    0%, 100% { transform: scale(1); }
+    15% { transform: scale(1.1); }
+    30% { transform: scale(1); }
+    45% { transform: scale(1.07); }
+  }
+  @keyframes pop {
+    0% { transform: scale(.8); }
+    60% { transform: scale(1.25); }
+    100% { transform: scale(1); }
+  }
+  .float {
+    position: fixed;
+    pointer-events: none;
+    font-size: 24px;
+    animation: rise 1.4s ease-out forwards;
+    z-index: 10;
+  }
+  @keyframes rise {
+    0%   { opacity: 1; transform: translate(0, 0) scale(.6) rotate(0deg); }
+    100% { opacity: 0; transform: translate(var(--dx), var(--dy)) scale(1.4) rotate(var(--rot)); }
+  }
+
+  .hint { font-size: .85rem; opacity: .6; }
+  .reset {
+    padding: 8px 18px; border-radius: 999px; border: 1px solid #ff5c8a55;
+    background: transparent; color: #ffb3c7; cursor: pointer; font-size: .85rem;
+  }
+  .reset:hover { background: #ff5c8a22; }
+</style>
+</head>
+<body>
+
+  <h1>❤️</h1>
+
+  <div class="counter"><span id="count">0</span><small>klik</small></div>
+
+  <button class="heart-btn" id="heart" aria-label="Klik hati"></button>
+
+  <p class="hint">Klik hati na sampe 100 ya semangatt!</p>
+  <button class="reset" id="reset">Reset</button>
+
+<script>
+  const heart = document.getElementById('heart');
+  const countEl = document.getElementById('count');
+  const emojis = ['❤️', '💖', '💗', '💕', '💘', '💝'];
+  let count = 0;
+  let redirecting = false;
+
+  const TARGET_CLICKS = 100;          
+  const TARGET_URL = 'memoify-spotify.html'; 
+
+  function spawn(x, y, n = 1) {
+    for (let i = 0; i < n; i++) {
+      const el = document.createElement('div');
+      el.className = 'float';
+      el.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+      el.style.left = x + 'px';
+      el.style.top = y + 'px';
+      el.style.setProperty('--dx', (Math.random() * 240 - 120) + 'px');
+      el.style.setProperty('--dy', -(80 + Math.random() * 180) + 'px');
+      el.style.setProperty('--rot', (Math.random() * 120 - 60) + 'deg');
+      el.style.fontSize = (16 + Math.random() * 24) + 'px';
+      document.body.appendChild(el);
+      el.addEventListener('animationend', () => el.remove());
+    }
+  }
+
+  heart.addEventListener('click', (e) => {
+    e.stopPropagation();
+    count++;
+    countEl.textContent = count;
+
+    heart.classList.remove('pop');
+    void heart.offsetWidth;            
+    heart.classList.add('pop');
+
+    const r = heart.getBoundingClientRect();
+    spawn(r.left + r.width / 2, r.top + r.height / 2, 8);
+
+    if (count >= TARGET_CLICKS && !redirecting) {
+      redirecting = true;
+      spawn(window.innerWidth / 2, window.innerHeight / 2, 40);
+      setTimeout(() => { window.location.href = TARGET_URL; }, 900);
+    }
+  });
+
+  document.addEventListener('click', (e) => spawn(e.clientX, e.clientY, 3));
+
+  document.getElementById('reset').addEventListener('click', (e) => {
+    e.stopPropagation();
+    count = 0;
+    countEl.textContent = 0;
+  });
+</script>
+</body>
+</html>
